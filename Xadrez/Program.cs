@@ -1,6 +1,5 @@
-﻿using tabuleiro;
+﻿using Xadrez.Tabuleiro;
 
-Posicao p;
-p = new(3, 4);
-Console.WriteLine("Posição: " + p);
+Tabuleiro tab = new(8,8);
+Console.WriteLine(tab.Pecas);
 Console.ReadLine();
