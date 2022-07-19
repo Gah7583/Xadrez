@@ -1,4 +1,4 @@
-﻿namespace Xadrez.Tabuleiro
+﻿namespace Xadrez.SistemaTabuleiro
 {
     enum Cor
     {

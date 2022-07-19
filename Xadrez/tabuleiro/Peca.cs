@@ -1,17 +1,17 @@
-﻿namespace Xadrez.Tabuleiro
+﻿namespace Xadrez.SistemaTabuleiro
 {
     internal class Peca
     {
-        public Posicao Posicao { get; set; }
+        public Posicao? Posicao { get; set; }
         public Cor Cor { get; set; }
         public int QtdMovimento { get; protected set; }
-        public Tabuleiro Tab { get; protected set; }
+        public Tabuleiro? Tabuleiro { get; set; }
 
-        public Peca(Posicao posicao, Cor cor, Tabuleiro tab)
+        public Peca(Cor cor)
         {
-            Posicao = posicao;
+            Posicao = null;
+            Tabuleiro = null;
             Cor = cor;
-            Tab = tab;
             QtdMovimento = 0;
         }
     }
