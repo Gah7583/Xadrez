@@ -30,6 +30,15 @@
             p.Posicao = pos;
             p.Tabuleiro = this;
         }
+        public void RetirarPeca(Posicao pos)
+        {
+            if (ExistePeca(pos))
+            {
+                Peca aux = Peca(pos);
+                aux.Posicao = null;
+                Pecas[pos.Linha, pos.Coluna] = null;
+            }
+        }
         public static bool PosicaoValida(Posicao pos)
         {
             if (pos.Linha > 7 || pos.Linha < 0 || pos.Coluna > 7 || pos.Coluna < 0)

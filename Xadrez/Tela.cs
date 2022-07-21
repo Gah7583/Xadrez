@@ -1,4 +1,5 @@
 ﻿using Xadrez.SistemaTabuleiro;
+using Xadrez.Xadrez;
 
 internal class Tela
 {
@@ -22,6 +23,19 @@ internal class Tela
         }
         Console.WriteLine("  a b c d e f g h");
     }
+
+    public static Posicao LerPosicaoXadrez()
+    {
+        string? s = Console.ReadLine();
+        if (string.IsNullOrEmpty(s))
+        {
+            throw new XadrezException("Digite a posição");
+        }
+        char coluna = s[0];
+        int linha = int.Parse(s[1] + "");
+        return new PosicaoXadrez(linha, coluna).ToPosicao();
+    }
+
     public static void ImprimirPeca(Peca peca)
     {
         if (peca.Cor == Cor.Branca)

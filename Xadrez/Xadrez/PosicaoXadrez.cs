@@ -4,13 +4,18 @@ namespace Xadrez.Xadrez
 {
     internal class PosicaoXadrez
     {
-        public char Coluna { get; set; }
         public int Linha { get; set; }
+        public char Coluna { get; set; }
 
-        public PosicaoXadrez(char coluna, int linha)
+        public PosicaoXadrez(int linha, char coluna)
         {
-            Coluna = coluna;
             Linha = linha;
+            Coluna = coluna;
+        }
+        public PosicaoXadrez(int linha, int coluna)
+        {
+            Linha = (8 - linha);
+            Coluna = Convert.ToChar(coluna + 97);
         }
 
         public Posicao ToPosicao()
