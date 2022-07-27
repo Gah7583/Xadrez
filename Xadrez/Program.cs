@@ -7,13 +7,17 @@ try
     while (!partida.PartidaTerminada)
     {
         Console.Clear();
-        Tela.ImprimirTabuleiro(partida.Tabuleiro);
+        Tela.ImprimirPartida(partida);
         Console.Write("Selecione a peça a ser movimentada: ");
         Posicao origem = Tela.LerPosicaoXadrez();
+        partida.ValidarPosicaoDeOrigem(origem);
+        bool[,] posicoesPossiveis = partida.Tabuleiro.Peca(origem).MovimentosPossiveis();
+        Tela.ImprimirTabuleiro(partida.Tabuleiro, posicoesPossiveis);
         Console.Write("Selecione o destino da peça: ");
         Posicao destino = Tela.LerPosicaoXadrez();
-        partida.MovimentarPeca(origem, destino);
-    }  
+        partida.ValidarPosicaoDeDestino(origem, destino);
+        partida.RealizarJogada(origem, destino);
+    }
 }
 catch (TabuleiroException e)
 {

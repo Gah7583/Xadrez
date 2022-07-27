@@ -10,14 +10,64 @@ internal class Tela
             Console.Write(8 - i + " ");
             for (int j = 0; j < tab.Colunas; j++)
             {
-                if (tab.Peca(i, j) is not null)
+                ImprimirPeca(tab.Peca(i, j));
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine("  a b c d e f g h");
+    }
+    public static void ImprimirPartida(PartidaDeXadrez partida)
+    {
+        ImprimirTabuleiro(partida.Tabuleiro);
+        ImprimirPecasCapturadas(partida);
+        Console.WriteLine();
+        Console.WriteLine("Turno: " + partida.Turno);
+        Console.WriteLine("Aguardando jogador das peças da cor " + partida.JogadorAtual);
+        if (partida.Xeque)
+        {
+            Console.WriteLine("Xeque!");
+        }
+    }
+
+    private static void ImprimirPecasCapturadas(PartidaDeXadrez partida)
+    {
+        Console.WriteLine("Peças capturadas:");
+        Console.Write("Brancas: ");
+        ImprimirConjunto(partida.PecasCapturadas(Cor.Branca));
+        Console.Write("Pretas: ");
+        ConsoleColor aux = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        ImprimirConjunto(partida.PecasCapturadas(Cor.Preta));
+        Console.ForegroundColor = aux;
+    }
+
+    private static void ImprimirConjunto(HashSet<Peca> pecas)
+    {
+        Console.Write("[");
+        foreach (Peca item in pecas)
+        {
+            Console.Write(item+ " ");
+        }
+        Console.WriteLine("]");
+    }
+
+    public static void ImprimirTabuleiro(Tabuleiro tab, bool[,] posP)
+    {
+        ConsoleColor FundoOriginal = Console.BackgroundColor;
+        ConsoleColor FundoAlterada = ConsoleColor.Red;
+
+
+        for (int i = 0; i < tab.Linhas; i++)
+        {
+            Console.Write(8 - i + " ");
+            for (int j = 0; j < tab.Colunas; j++)
+            {
+                if (posP[i, j])
                 {
-                    ImprimirPeca(tab.Peca(i, j));
+                    Console.BackgroundColor = FundoAlterada;
                 }
-                else
-                {
-                    Console.Write("- ");
-                }
+                ImprimirPeca(tab.Peca(i, j));
+                Console.BackgroundColor = FundoOriginal;
             }
             Console.WriteLine();
         }
@@ -29,7 +79,7 @@ internal class Tela
         string? s = Console.ReadLine();
         if (string.IsNullOrEmpty(s))
         {
-            throw new XadrezException("Digite a posição");
+            throw new TabuleiroException("Digite a posição");
         }
         char coluna = s[0];
         int linha = int.Parse(s[1] + "");
@@ -38,7 +88,11 @@ internal class Tela
 
     public static void ImprimirPeca(Peca peca)
     {
-        if (peca.Cor == Cor.Branca)
+        if (peca == null)
+        {
+            Console.Write("- ");
+        }
+        else if (peca.Cor == Cor.Branca)
         {
             Console.Write(peca + " ");
         }

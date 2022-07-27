@@ -30,12 +30,12 @@ namespace Xadrez.Xadrez
                     mat[pos.Linha, pos.Coluna] = true;
                 }
                 pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna + 1);
-                if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
+                if (Tabuleiro.PosicaoValida(pos) && Tabuleiro.Peca(pos) != null && Tabuleiro.Peca(pos).Cor != Cor)
                 {
                     mat[pos.Linha, pos.Coluna] = true;
                 }
                 pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna - 1);
-                if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
+                if (Tabuleiro.PosicaoValida(pos) && Tabuleiro.Peca(pos) != null && Tabuleiro.Peca(pos).Cor != Cor)
                 {
                     mat[pos.Linha, pos.Coluna] = true;
                 }
@@ -56,13 +56,13 @@ namespace Xadrez.Xadrez
                     mat[pos.Linha, pos.Coluna] = true;
                 }
                 pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna + 1);
-                if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
+                if (Tabuleiro.PosicaoValida(pos) && Tabuleiro.Peca(pos) != null && Tabuleiro.Peca(pos).Cor != Cor)
                 {
                     mat[pos.Linha, pos.Coluna] = true;
 
                 }
                 pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna - 1);
-                if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
+                if (Tabuleiro.PosicaoValida(pos) && Tabuleiro.Peca(pos) != null && Tabuleiro.Peca(pos).Cor != Cor)
                 {
                     mat[pos.Linha, pos.Coluna] = true;
 
