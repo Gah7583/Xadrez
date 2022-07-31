@@ -22,10 +22,18 @@ internal class Tela
         ImprimirPecasCapturadas(partida);
         Console.WriteLine();
         Console.WriteLine("Turno: " + partida.Turno);
-        Console.WriteLine("Aguardando jogador das peças da cor " + partida.JogadorAtual);
-        if (partida.Xeque)
+        if (!partida.PartidaTerminada)
         {
-            Console.WriteLine("Xeque!");
+            Console.WriteLine("Aguardando jogador das peças da cor " + partida.JogadorAtual);
+            if (partida.Xeque)
+            {
+                Console.WriteLine("Xeque!");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Xequemate!");
+            Console.WriteLine("Vencedor: " + partida.JogadorAtual);
         }
     }
 
@@ -46,7 +54,7 @@ internal class Tela
         Console.Write("[");
         foreach (Peca item in pecas)
         {
-            Console.Write(item+ " ");
+            Console.Write(item + " ");
         }
         Console.WriteLine("]");
     }

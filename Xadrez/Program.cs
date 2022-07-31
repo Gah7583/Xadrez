@@ -18,6 +18,8 @@ try
         partida.ValidarPosicaoDeDestino(origem, destino);
         partida.RealizarJogada(origem, destino);
     }
+    Console.Clear();
+    Tela.ImprimirPartida(partida);
 }
 catch (TabuleiroException e)
 {

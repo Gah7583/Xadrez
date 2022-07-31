@@ -4,7 +4,11 @@ namespace Xadrez.Xadrez
 {
     internal class Rei : Peca
     {
-        public Rei(Cor cor) : base(cor) { }
+        private PartidaDeXadrez Partida { get; set; }
+        public Rei(Cor cor, PartidaDeXadrez partida) : base(cor)
+        {
+            Partida = partida;
+        }
         public override string ToString()
         {
             return "R";
@@ -61,6 +65,41 @@ namespace Xadrez.Xadrez
             if (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             {
                 mat[pos.Linha, pos.Coluna] = true;
+            }
+            //roque pequeno
+            if (QtdMovimento == 0 && !Partida.Xeque)
+            {
+                pos.DefinirValores(Posicao.Linha, Posicao.Coluna + 1);
+                while (Tabuleiro.PosicaoValida(pos))
+                {
+                    if (Tabuleiro.Peca(pos) is Torre && Tabuleiro.Peca(pos).QtdMovimento == 0)
+                    {
+                        mat[pos.Linha, pos.Coluna - 1] = true;
+                    }
+                    if (Tabuleiro.Peca(pos) != null && Tabuleiro.Peca(pos).Cor == Cor)
+                    {
+                        break;
+                    }
+                    pos.Coluna++;
+                }
+
+            }
+            // roque grande
+            if (QtdMovimento == 0 && !Partida.Xeque)
+            {
+                pos.DefinirValores(Posicao.Linha, Posicao.Coluna - 1);
+                while (Tabuleiro.PosicaoValida(pos))
+                {
+                    if (Tabuleiro.Peca(pos) is Torre && Tabuleiro.Peca(pos).QtdMovimento == 0)
+                    {
+                        mat[pos.Linha, pos.Coluna +2] = true;
+                    }
+                    if (Tabuleiro.Peca(pos) != null && Tabuleiro.Peca(pos).Cor == Cor)
+                    {
+                        break;
+                    }
+                    pos.Coluna--;
+                }
             }
             return mat;
         }

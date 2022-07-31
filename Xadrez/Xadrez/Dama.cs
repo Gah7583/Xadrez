@@ -49,7 +49,7 @@ namespace Xadrez.Xadrez
                 pos.Coluna++;
             }
             //sudeste
-            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna);
+            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna + 1);
             while (Tabuleiro.PosicaoValida(pos) && PodeMover(pos))
             {
                 mat[pos.Linha, pos.Coluna] = true;

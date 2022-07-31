@@ -33,9 +33,24 @@ namespace Xadrez.Xadrez
             {
                 capturadas.Add(pecaCapturada);
             }
+
+            //roque pequeno
+            if (peca is Rei && (destino.Coluna == origem.Coluna + 2))
+            {
+                Posicao origemTorre = new (origem.Linha, origem.Coluna + 3);
+                Posicao destinoTorre = new (origem.Linha, origem.Coluna + 1);
+                MovimentarPeca(origemTorre, destinoTorre);
+                
+            }
+            //roque grande
+            if (peca is Rei && (destino.Coluna == origem.Coluna - 2))
+            {
+                Posicao origemTorre = new (origem.Linha, origem.Coluna - 4);
+                Posicao destinoTorre = new (origem.Linha, origem.Coluna - 1);
+                MovimentarPeca(origemTorre, destinoTorre);
+            }
             return pecaCapturada;
         }
-
         public void RealizarJogada(Posicao origem, Posicao destino)
         {
             Peca pecaCapturada = MovimentarPeca(origem, destino);
@@ -52,11 +67,17 @@ namespace Xadrez.Xadrez
             {
                 Xeque = false;
             }
-            JogadorAtual = JogadorAtual == Cor.Branca ? Cor.Preta : Cor.Branca;
-            Turno++;
+            if (TesteXequeMate(Adversaria(JogadorAtual)))
+            {
+                PartidaTerminada = true;
+            }
+            else
+            {
+                JogadorAtual = JogadorAtual == Cor.Branca ? Cor.Preta : Cor.Branca;
+                Turno++;
+            }
 
         }
-
         private void DesfazerMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
         {
             Peca peca = Tabuleiro.Peca(destino);
@@ -69,7 +90,6 @@ namespace Xadrez.Xadrez
                 capturadas.Remove(pecaCapturada);
             }
         }
-
         public HashSet<Peca> PecasCapturadas(Cor cor)
         {
             HashSet<Peca> aux = new();
@@ -121,7 +141,7 @@ namespace Xadrez.Xadrez
             {
                 throw new TabuleiroException("Você não pode comer sua própria peça!");
             }
-            if (!Tabuleiro.Peca(origem).PossoMoverPara(destino))
+            if (!Tabuleiro.Peca(origem).EPossivelMover(destino))
             {
                 throw new TabuleiroException("Posição de destino Inválida!");
             }
@@ -153,6 +173,36 @@ namespace Xadrez.Xadrez
                 }
             }
             return false;
+        }
+        public bool TesteXequeMate(Cor cor)
+        {
+            if (!EstaEmXeque(cor))
+            {
+                return false;
+            }
+            foreach (Peca peca in PecasEmJogo(cor))
+            {
+                bool[,] mat = peca.MovimentosPossiveis();
+                for (int i = 0; i < Tabuleiro.Linhas; i++)
+                {
+                    for (int j = 0; j < Tabuleiro.Colunas; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicao origem = peca.Posicao;
+                            Posicao destino = new(i, j);
+                            Peca pecaCapturada = MovimentarPeca(peca.Posicao, destino);
+                            bool TesteXeque = EstaEmXeque(cor);
+                            DesfazerMovimento(origem, destino, pecaCapturada);
+                            if (!TesteXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
         private Peca Rei(Cor cor)
         {
@@ -193,10 +243,10 @@ namespace Xadrez.Xadrez
             ColocarNovaPeca(7, 5, new Bispo(Cor.Branca));
 
             //Reis e Damas
-            ColocarNovaPeca(0, 3, new Rei(Cor.Preta));
-            ColocarNovaPeca(7, 3, new Rei(Cor.Branca));
-            ColocarNovaPeca(0, 4, new Dama(Cor.Preta));
-            ColocarNovaPeca(7, 4, new Dama(Cor.Branca));
+            ColocarNovaPeca(0, 4, new Rei(Cor.Preta, this));
+            ColocarNovaPeca(7, 4, new Rei(Cor.Branca, this));
+            ColocarNovaPeca(0, 3, new Dama(Cor.Preta));
+            ColocarNovaPeca(7, 3, new Dama(Cor.Branca));
         }
     }
 }
