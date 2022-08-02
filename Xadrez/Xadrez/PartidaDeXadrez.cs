@@ -11,6 +11,7 @@ namespace Xadrez.Xadrez
         public bool Xeque { get; private set; }
         private readonly HashSet<Peca> pecas;
         private readonly HashSet<Peca> capturadas;
+        public Peca vulneravelEnPassant;
 
         public PartidaDeXadrez()
         {
@@ -37,17 +38,35 @@ namespace Xadrez.Xadrez
             //roque pequeno
             if (peca is Rei && (destino.Coluna == origem.Coluna + 2))
             {
-                Posicao origemTorre = new (origem.Linha, origem.Coluna + 3);
-                Posicao destinoTorre = new (origem.Linha, origem.Coluna + 1);
+                Posicao origemTorre = new(origem.Linha, origem.Coluna + 3);
+                Posicao destinoTorre = new(origem.Linha, origem.Coluna + 1);
                 MovimentarPeca(origemTorre, destinoTorre);
-                
+
             }
             //roque grande
             if (peca is Rei && (destino.Coluna == origem.Coluna - 2))
             {
-                Posicao origemTorre = new (origem.Linha, origem.Coluna - 4);
-                Posicao destinoTorre = new (origem.Linha, origem.Coluna - 1);
+                Posicao origemTorre = new(origem.Linha, origem.Coluna - 4);
+                Posicao destinoTorre = new(origem.Linha, origem.Coluna - 1);
                 MovimentarPeca(origemTorre, destinoTorre);
+            }
+            //en passant
+            if (peca is Peao)
+            {
+                if (origem.Coluna != destino.Coluna && pecaCapturada == null)
+                {
+                    Posicao posP;
+                    if (peca.Cor == Cor.Branca)
+                    {
+                        posP = new(destino.Linha + 1, destino.Coluna);
+                    }
+                    else
+                    {
+                        posP = new(destino.Linha - 2, destino.Coluna);
+                    }
+                    capturadas.Add(Tabuleiro.Peca(posP));
+                    Tabuleiro.RetirarPeca(posP);
+                }
             }
             return pecaCapturada;
         }
@@ -75,6 +94,16 @@ namespace Xadrez.Xadrez
             {
                 JogadorAtual = JogadorAtual == Cor.Branca ? Cor.Preta : Cor.Branca;
                 Turno++;
+            }
+            Peca p = Tabuleiro.Peca(destino);
+            // En Passant
+            if (p is Peao && (destino.Linha == origem.Linha - 1 || destino.Linha == origem.Linha + 1))
+            {
+                vulneravelEnPassant = p;
+            }
+            else
+            {
+                 vulneravelEnPassant = null;
             }
 
         }
@@ -220,8 +249,8 @@ namespace Xadrez.Xadrez
             //Peões
             for (int i = 0; i < 8; i++)
             {
-                ColocarNovaPeca(6, i, new Peao(Cor.Branca));
-                ColocarNovaPeca(1, i, new Peao(Cor.Preta));
+                ColocarNovaPeca(6, i, new Peao(Cor.Branca, this));
+                ColocarNovaPeca(1, i, new Peao(Cor.Preta, this));
             }
 
             //Torres
