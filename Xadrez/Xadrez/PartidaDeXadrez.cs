@@ -62,7 +62,7 @@ namespace Xadrez.Xadrez
                     }
                     else
                     {
-                        posP = new(destino.Linha - 2, destino.Coluna);
+                        posP = new(destino.Linha - 1, destino.Coluna);
                     }
                     capturadas.Add(Tabuleiro.Peca(posP));
                     Tabuleiro.RetirarPeca(posP);
@@ -73,10 +73,23 @@ namespace Xadrez.Xadrez
         public void RealizarJogada(Posicao origem, Posicao destino)
         {
             Peca pecaCapturada = MovimentarPeca(origem, destino);
+            Peca p = Tabuleiro.Peca(destino);
             if (EstaEmXeque(JogadorAtual))
             {
                 DesfazerMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
+            }
+            //Promoção
+            if (p is Peao)
+            {
+                if ((p.Cor == Cor.Branca && destino.Linha == 0) || (p.Cor == Cor.Preta && destino.Linha == 7))
+                {
+                    Tabuleiro.RetirarPeca(destino);
+                    pecas.Remove(p);
+                    Dama dama = new(p.Cor);
+                    Tabuleiro.ColocarPeca(dama, destino);
+                    pecas.Add(dama);
+                }
             }
             if (EstaEmXeque(Adversaria(JogadorAtual)))
             {
@@ -95,9 +108,8 @@ namespace Xadrez.Xadrez
                 JogadorAtual = JogadorAtual == Cor.Branca ? Cor.Preta : Cor.Branca;
                 Turno++;
             }
-            Peca p = Tabuleiro.Peca(destino);
             // En Passant
-            if (p is Peao && (destino.Linha == origem.Linha - 1 || destino.Linha == origem.Linha + 1))
+            if (p is Peao && (destino.Linha == origem.Linha - 2 || destino.Linha == origem.Linha + 2))
             {
                 vulneravelEnPassant = p;
             }

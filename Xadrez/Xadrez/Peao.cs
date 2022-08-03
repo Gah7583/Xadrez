@@ -47,11 +47,11 @@ namespace Xadrez.Xadrez
                 {
                     Posicao esquerda = new(Posicao.Linha, Posicao.Coluna - 1);
                     Posicao direita = new(Posicao.Linha, Posicao.Coluna + 1);
-                    if (Tabuleiro.PosicaoValida(esquerda) && PodeMover(esquerda) && Partida.vulneravelEnPassant == Tabuleiro.Peca(esquerda))
+                    if (Tabuleiro.PosicaoValida(esquerda) && Tabuleiro.Peca(esquerda) !=null && Tabuleiro.Peca(esquerda).Cor != Cor && Partida.vulneravelEnPassant == Tabuleiro.Peca(esquerda))
                     {
                         mat[esquerda.Linha - 1, esquerda.Coluna] = true;
                     }
-                    if (Tabuleiro.PosicaoValida(direita) && PodeMover(direita) && Partida.vulneravelEnPassant == Tabuleiro.Peca(direita))
+                    if (Tabuleiro.PosicaoValida(direita) && Tabuleiro.Peca(esquerda) != null && Tabuleiro.Peca(direita).Cor != Cor && Partida.vulneravelEnPassant == Tabuleiro.Peca(direita))
                     {
                         mat[direita.Linha - 1, direita.Coluna] = true;
                     }
@@ -88,11 +88,11 @@ namespace Xadrez.Xadrez
                 {
                     Posicao esquerda = new(Posicao.Linha, Posicao.Coluna - 1);
                     Posicao direita = new(Posicao.Linha, Posicao.Coluna + 1);
-                    if (Tabuleiro.PosicaoValida(esquerda) && PodeMover(esquerda) && Partida.vulneravelEnPassant == Tabuleiro.Peca(esquerda))
+                    if (Tabuleiro.PosicaoValida(esquerda) && Tabuleiro.Peca(esquerda) != null && Tabuleiro.Peca(esquerda).Cor != Cor && Partida.vulneravelEnPassant == Tabuleiro.Peca(esquerda))
                     {
                         mat[esquerda.Linha + 1, esquerda.Coluna] = true;
                     }
-                    if (Tabuleiro.PosicaoValida(direita) && PodeMover(direita) && Partida.vulneravelEnPassant == Tabuleiro.Peca(direita))
+                    if (Tabuleiro.PosicaoValida(direita) && Tabuleiro.Peca(esquerda) != null && Tabuleiro.Peca(direita).Cor != Cor && Partida.vulneravelEnPassant == Tabuleiro.Peca(direita))
                     {
                         mat[direita.Linha + 1, direita.Coluna] = true;
                     }
